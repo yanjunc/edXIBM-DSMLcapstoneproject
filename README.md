@@ -1,2 +1,3 @@
 # edXIBM
-edX IBM Data Science Program 
+## edX IBM Data Science Program 
+Some hands-on practice!
