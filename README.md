@@ -1,3 +1,3 @@
 # edXIBM
-## edX IBM Data Science Program 
-Some hands-on practice!
+## edX IBM Data Science and Machine Learning Capstone Project
+This is the respiratory for the final project.
