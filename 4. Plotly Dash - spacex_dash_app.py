@@ -1,3 +1,4 @@
+# import libraries
 import pandas as pd
 import dash
 import dash_html_components as html
@@ -5,7 +6,7 @@ import dash_core_components as dcc
 from dash.dependencies import Input, Output
 import plotly.express as px
 
-
+# dataframe
 spacex_df = pd.read_csv("spacex_launch_dash.csv")
 max_payload = spacex_df['Payload Mass (kg)'].max()
 min_payload = spacex_df['Payload Mass (kg)'].min()
@@ -20,23 +21,15 @@ for site in uniquelaunchsites:
  lsites.append({'label': site, 'value': site})                                 
                            
 
-
+# dropdown list for launch sites, slider for payload mass range in kg
 app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                         style={'textAlign': 'center', 'color': '#503D36',
                                                'font-size': 40}),
-                
-                                
-
-                    
                                 dcc.Dropdown(id='site_dropdown',options=lsites,placeholder='Select a Launch Site here', searchable = True , value = 'All Sites'),
                                 html.Br(),
-
-                       
                                 html.Div(dcc.Graph(id='success-pie-chart')),
                                 html.Br(),
-
-                                html.P("Payload range (Kg):"),
-                             
+                                html.P("Payload range (kg):"),
                                 dcc.RangeSlider(
                                     id='payload_slider',
                                     min=0,
@@ -55,14 +48,11 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
                                             9000: '9000 kg',
                                             10000: '10000 kg'                                         
                                     },
-
                                     value=[min_payload,max_payload]
                                 ),
-                            
-                                html.Div(dcc.Graph(id='success-payload-scatter-chart')),
-                              
+                                html.Div(dcc.Graph(id='success-payload-scatter-plot')),
                                 ])
-
+# total launches, pie chart
 @app.callback(
      Output(component_id='success-pie-chart',component_property='figure'),
      [Input(component_id='site_dropdown',component_property='value')]               
@@ -70,14 +60,15 @@ app.layout = html.Div(children=[html.H1('SpaceX Launch Records Dashboard',
 def update_graph(site_dropdown):
     if (site_dropdown == 'All Sites'):
         df  = spacex_df[spacex_df['class'] == 1]
-        fig = px.pie(df, names = 'Launch Site',hole=.3,title = 'Total Success Launches By all sites')
+        fig = px.pie(df, names = 'Launch Site',hole=.3,title = 'Total Success Launches by All Sites')
     else:
         df  = spacex_df.loc[spacex_df['Launch Site'] == site_dropdown]
         fig = px.pie(df, names = 'class',hole=.3,title = 'Total Success Launches for site '+site_dropdown)
     return fig
 
+# payload mass, scatter plot
 @app.callback(
-     Output(component_id='success-payload-scatter-chart',component_property='figure'),
+     Output(component_id='success-payload-scatter-plot',component_property='figure'),
      [Input(component_id='site_dropdown',component_property='value'),Input(component_id="payload_slider", component_property="value")]               
 )
 def update_scattergraph(site_dropdown,payload_slider):
