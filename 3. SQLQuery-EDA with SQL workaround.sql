@@ -1,16 +1,4 @@
-/****** Script for SelectTopNRows command from SSMS  ******/
-SELECT TOP (1000) [Index]
-      ,[Date]
-      ,[Time (UTC)]
-      ,[Booster_Version]
-      ,[Launch_Site]
-      ,[Payload]
-      ,[PAYLOAD_MASS__KG_]
-      ,[Orbit]
-      ,[Customer]
-      ,[Mission_Outcome]
-      ,[Landing _Outcome]
-  FROM [IBM].[dbo].[Spacex$]
+/*This SQL file is a workaround for the EDA with SQL lab.*/
 
 /*Task 1 
 Names of the unique launch sites in the space mission */
@@ -36,7 +24,7 @@ List the date where the first succesful landing outcome in drone ship was acheiv
 select min(Date) as SuccessLandingOutcome from dbo.Spacex$ 
 	where [Landing _Outcome] = 'Success (drone ship)'
 
-/*Task 6¶
+/*Task 6Â¶
 List the names of the boosters which have success in ground pad and have payload mass greater than 4000 but less than 6000*/
 Select Booster_Version from dbo.Spacex$ 
 	where [Landing _Outcome] = 'Success (ground pad)' AND Payload_MASS__KG_ > 4000 AND Payload_MASS__KG_ < 6000
@@ -55,7 +43,7 @@ Select distinct Booster_Version, MAX(PAYLOAD_MASS__KG_) as [Maximum Payload Mass
 /*Task 9
 List the records which will display the month names, succesful landing_outcomes in ground pad ,booster versions, launch_site for the months in year 2017*/
 Select 
-	DateName( month , DateAdd( month , MONTH(CONVERT(date,Date, 105)) , 0 ) - 1 )  as Month, 
+	DateName(month, DateAdd(month, MONTH(CONVERT(date,Date, 105)), 0 ) - 1 )  as Month, 
 	Booster_Version, Launch_Site, [Landing _Outcome] from dbo.Spacex$ 
 		where  ([Landing _Outcome] = 'Success (ground pad)') and YEAR(CONVERT(date,Date, 105)) = '2017'
 
